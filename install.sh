@@ -1,9 +1,17 @@
 #!/bin/bash
 
+
+
+
 mkdir -p ~/.config/weather_themes
 
-cp weather_theme.sh ~/.local/bin/
-cp systemd/weather_theme.* ~/.config/systemd/user
+REPO_PATH=$(pwd)
+
+
+ln -sf "$REPO_PATH/weather_theme.sh" ~/.local/bin/weather_theme.sh
+ln -sf "$REPO_PATH/systemd/weather_theme.service" ~/.config/systemd/user/weather_theme.service
+ln -sf "$REPO_PATH/systemd/weather_theme.timer" ~/.config/systemd/user/weather_theme.timer
+
 
 chmod +x ~/.local/bin/weather_theme.sh
 

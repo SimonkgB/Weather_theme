@@ -9,15 +9,19 @@ DESC=$(echo | jq -r ".current_condition[0].weatherDesc[0].value" | tr "[:upper]"
 
 # mapping
 
-if [["$DESC" == *"thunder"* ]]; then
-	theme="thunderstrom"
+if [[ "$DESC" == *"thunder"* ]]; then
+    THEME="thunderstorm"
 elif [ "$TEMP" -lt 0 ]; then
-	THEME="nordic_winther"
-elif [[ "$DESC" == *"sunny"* ]] && [ "$TEMP" -gt 20]; then
-	THEME="bright_summer"
+    THEME="nordic_winter"
+elif [[ "$DESC" == *"sunny"* ]] && [ "$TEMP" -gt 20 ]; then
+    THEME="bright_summer"
 else
-	THEME="default_dark"
+    THEME="default_dark"
 fi
+
+
+
+echo "Mode: $THEME ($DESC at ${TEMP}C)"
 
 
 # exec
