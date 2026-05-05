@@ -3,11 +3,23 @@
 # init.. test
 
 # grabber
-DATA=$(curl -s "wttr.in/oslo=format=j1")
-TEMP=$(echo $DATA | jq -r ".xurrent_condition[0].temp_C")
-DESC=$(echo | jq -r ".current_condition[0].weatherDesc[0].value" | tr "[:upper]" "[:lower]")
+THEME_DIR="$HOME/.config/weather_themes"
 
-# mapping
+LOCATION=${1:-""} # apparantly this is auto configured
+RAW_DATA=$(curl -s --max-time 10 "wttr.in/$LOCATION?format=j1")
+
+if echo "$RAW_DATA" | jq empty 2>/dev/null; then
+    TEMP=$(echo "$RAW_DATA" | jq -r '.current_condition[0].temp_C')
+    DESC=$(echo "$RAW_DATA" | jq -r '.current_condition[0].weatherDesc[0].value' | tr '[:upper:]' '[:lower:]')
+else
+    # fb
+    TEMP=20
+    DESC="clear"
+fi
+
+
+
+#mapping
 
 if [[ "$DESC" == *"thunder"* ]]; then
     THEME="thunderstorm"
