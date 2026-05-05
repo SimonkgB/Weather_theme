@@ -23,10 +23,20 @@ fi
 
 if [[ "$DESC" == *"thunder"* ]]; then
     THEME="thunderstorm"
-elif [ "$TEMP" -lt 0 ]; then
+elif [[ "$DESC" == *"snow"* ]] || [ "$TEMP" -lt 0 ]; then
     THEME="nordic_winter"
-elif [[ "$DESC" == *"sunny"* ]] && [ "$TEMP" -gt 20 ]; then
-    THEME="bright_summer"
+elif [[ "$DESC" == *"rain"* ]] || [[ "$DESC" == *"drizzle"* ]]; then
+    THEME="rainy_day"
+elif [[ "$DESC" == *"fog"* ]] || [[ "$DESC" == *"mist"* ]] || [[ "$DESC" == *"haze"* ]]; then
+    THEME="atmospheric"
+elif [[ "$DESC" == *"cloudy"* ]] || [[ "$DESC" == *"overcast"* ]]; then
+    THEME="gloomy_overcast"
+elif [[ "$DESC" == *"sunny"* ]] || [[ "$DESC" == *"clear"* ]]; then
+    if [ "$TEMP" -gt 22 ]; then
+        THEME="bright_summer"
+    else
+        THEME="default_dark"
+    fi
 else
     THEME="default_dark"
 fi
