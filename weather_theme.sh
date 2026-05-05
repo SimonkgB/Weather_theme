@@ -18,7 +18,6 @@ else
 fi
 
 
-
 #mapping
 
 if [[ "$DESC" == *"thunder"* ]]; then
@@ -43,9 +42,15 @@ fi
 
 
 
-echo "Mode: $THEME ($DESC at ${TEMP}C)"
-
-
 # exec
 
-wal --theme "$THEME"
+THEME_FILE="$THEME_DIR/$THEME.json"
+
+if [ -f "$THEME_FILE" ]; then
+    wal -q -f "$THEME_FILE"
+    echo "applied $THEME theme ($DESC at ${TEMP}°C)."
+else
+    #fb ex (have to change to "kill terminal" to get default)
+    #wal -q --theme base16-nord
+    echo "applied FB.."
+fi

@@ -3,7 +3,7 @@
 
 
 
-mkdir -p ~/.config/weather_themes
+#mkdir -p ~/.config/weather_themes
 
 REPO_PATH=$(pwd)
 
@@ -11,7 +11,7 @@ REPO_PATH=$(pwd)
 ln -sf "$REPO_PATH/weather_theme.sh" ~/.local/bin/weather_theme.sh
 ln -sf "$REPO_PATH/systemd/weather_theme.service" ~/.config/systemd/user/weather_theme.service
 ln -sf "$REPO_PATH/systemd/weather_theme.timer" ~/.config/systemd/user/weather_theme.timer
-ln -sfn "$REPO_PATH/themes" ~/.config/weather_themes
+ln -sfn "$REPO_PATH/weather_themes" ~/.config/weather_themes
 
 chmod +x ~/.local/bin/weather_theme.sh
 
