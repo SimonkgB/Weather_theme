@@ -17,6 +17,10 @@ else
     DESC="clear"
 fi
 
+# testing params
+#TEMP=24
+#DESC="rain"
+
 
 #mapping
 
