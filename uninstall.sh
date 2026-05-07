@@ -7,11 +7,9 @@ systemctl --user stop weather_theme.service 2>/dev/null
 
 
 rm -f ~/.local/bin/weather_theme.sh
+rm -rf ~/.config/weather_theme
 rm -f ~/.config/systemd/user/weather_theme.service
 rm -f ~/.config/systemd/user/weather_theme.timer
-rm -rf  ~/.config/weather_themes
-
-# rm -rf ~/.config/weather_themes
 
 
 

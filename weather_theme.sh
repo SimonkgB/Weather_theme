@@ -3,7 +3,7 @@
 # init.. test
 
 # grabber
-THEME_DIR="$HOME/.config/weather_themes"
+THEME_DIR="$HOME/.config/weather_theme/themes"
 
 LOCATION="OSLO"
 RAW_DATA=$(curl -s --max-time 10 "wttr.in/$LOCATION?format=j1")
@@ -18,8 +18,8 @@ else
 fi
 
 # testing params
-#TEMP=24
-#DESC="rain"
+TEMP=24
+DESC="rain"
 
 
 #mapping

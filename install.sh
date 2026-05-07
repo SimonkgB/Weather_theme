@@ -1,17 +1,18 @@
 #!/bin/bash
 
-
-
-
-#mkdir -p ~/.config/weather_themes
-
 REPO_PATH=$(pwd)
 
+mkdir -p ~/.config/weather_theme/themes
+mkdir -p ~/.config/systemd/user
+mkdir -p ~/.local/bin
 
-ln -sf "$REPO_PATH/weather_theme.sh" ~/.local/bin/weather_theme.sh
-ln -sf "$REPO_PATH/systemd/weather_theme.service" ~/.config/systemd/user/weather_theme.service
-ln -sf "$REPO_PATH/systemd/weather_theme.timer" ~/.config/systemd/user/weather_theme.timer
-ln -sfn "$REPO_PATH/weather_themes" ~/.config/weather_themes
+cp "$REPO_PATH/weather_theme.sh" ~/.config/weather_theme/weather_theme.sh
+cp "$REPO_PATH/uninstall.sh" ~/.config/weather_theme/uninstall.sh
+cp -r "$REPO_PATH/weather_themes/." ~/.config/weather_theme/themes/
+cp "$REPO_PATH/systemd/weather_theme.service" ~/.config/systemd/user/weather_theme.service
+cp "$REPO_PATH/systemd/weather_theme.timer" ~/.config/systemd/user/weather_theme.timer
+
+ln -sf ~/.config/weather_theme/weather_theme.sh ~/.local/bin/weather_theme.sh
 
 chmod +x ~/.local/bin/weather_theme.sh
 
