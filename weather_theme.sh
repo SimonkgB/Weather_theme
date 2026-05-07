@@ -5,7 +5,7 @@
 # grabber
 THEME_DIR="$HOME/.config/weather_themes"
 
-LOCATION=${1:-""} # apparantly this is auto configured
+LOCATION="OSLO"
 RAW_DATA=$(curl -s --max-time 10 "wttr.in/$LOCATION?format=j1")
 
 if echo "$RAW_DATA" | jq empty 2>/dev/null; then
@@ -47,7 +47,20 @@ fi
 THEME_FILE="$THEME_DIR/$THEME.json"
 
 if [ -f "$THEME_FILE" ]; then
+    SEQUENCES_FILE="$HOME/.cache/wal/sequences"
+    BACKUP=""
+    [[ -f "$SEQUENCES_FILE" ]] && BACKUP=$(cat "$SEQUENCES_FILE")
+
     wal -q -f "$THEME_FILE"
+    cp "$SEQUENCES_FILE" "$HOME/.cache/weather_theme_sequences"
+
+    # restore original so we don't clobber other wal themes
+    if [[ -n "$BACKUP" ]]; then
+        echo "$BACKUP" > "$SEQUENCES_FILE"
+    else
+        rm -f "$SEQUENCES_FILE"
+    fi
+
     echo "applied $THEME theme ($DESC at ${TEMP}°C)."
 else
     #fb ex (have to change to "kill terminal" to get default)

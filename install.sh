@@ -17,5 +17,17 @@ chmod +x ~/.local/bin/weather_theme.sh
 
 systemctl --user daemon-reload
 systemctl --user enable --now weather_theme.timer
+systemctl --user start weather_theme.service
+
+#pywal sequences hook to zshrc if not already present
+ZSHRC_MARKER="# BEGIN weather_theme"
+if ! grep -qF "$ZSHRC_MARKER" ~/.zshrc; then
+    cat >> ~/.zshrc <<'EOF'
+
+# BEGIN weather_theme
+[[ -f ~/.cache/weather_theme_sequences ]] && (cat ~/.cache/weather_theme_sequences &)
+# END weather_theme
+EOF
+fi
 
 echo "shit started... wooooo!"
