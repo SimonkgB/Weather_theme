@@ -1,0 +1,12 @@
+[Unit]
+Description=Dynamic Weather Theme Engine
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/weather_theme.sh
+ExecStartPre=/usr/bin/sleep 5
+
+[Install]
+WantedBy=default.target

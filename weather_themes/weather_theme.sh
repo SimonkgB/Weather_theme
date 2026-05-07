@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# init.. test
+
+# grabber
+THEME_DIR="$HOME/.config/weather_theme/themes"
+
+LOCATION="OSLO"
+RAW_DATA=$(curl -s --max-time 10 "wttr.in/$LOCATION?format=j1")
+
+if echo "$RAW_DATA" | jq empty 2>/dev/null; then
+    TEMP=$(echo "$RAW_DATA" | jq -r '.current_condition[0].temp_C')
+    DESC=$(echo "$RAW_DATA" | jq -r '.current_condition[0].weatherDesc[0].value' | tr '[:upper:]' '[:lower:]')
+else
+    # fb
+    TEMP=20
+    DESC="clear"
+fi
+
+# testing params
+TEMP=24
+DESC="rain"
+
+
+#mapping
+
+if [[ "$DESC" == *"thunder"* ]]; then
+    THEME="thunderstorm"
+elif [[ "$DESC" == *"snow"* ]] || [ "$TEMP" -lt 0 ]; then
+    THEME="nordic_winter"
+elif [[ "$DESC" == *"rain"* ]] || [[ "$DESC" == *"drizzle"* ]]; then
+    THEME="rainy_day"
+elif [[ "$DESC" == *"fog"* ]] || [[ "$DESC" == *"mist"* ]] || [[ "$DESC" == *"haze"* ]]; then
+    THEME="atmospheric"
+elif [[ "$DESC" == *"cloudy"* ]] || [[ "$DESC" == *"overcast"* ]]; then
+    THEME="gloomy_overcast"
+elif [[ "$DESC" == *"sunny"* ]] || [[ "$DESC" == *"clear"* ]]; then
+    if [ "$TEMP" -gt 22 ]; then
+        THEME="bright_summer"
+    else
+        THEME="default_dark"
+    fi
+else
+    THEME="default_dark"
+fi
+
+
+
+# exec
+
+THEME_FILE="$THEME_DIR/$THEME.json"
+
+if [ -f "$THEME_FILE" ]; then
+    SEQUENCES_FILE="$HOME/.cache/wal/sequences"
+    BACKUP=""
+    [[ -f "$SEQUENCES_FILE" ]] && BACKUP=$(cat "$SEQUENCES_FILE")
+
+    wal -q -f "$THEME_FILE"
+    cp "$SEQUENCES_FILE" "$HOME/.cache/weather_theme_sequences"
+
+    # restore original so we don't clobber other wal themes
+    if [[ -n "$BACKUP" ]]; then
+        echo "$BACKUP" > "$SEQUENCES_FILE"
+    else
+        rm -f "$SEQUENCES_FILE"
+    fi
+
+    echo "applied $THEME theme ($DESC at ${TEMP}°C)."
+else
+    #fb ex (have to change to "kill terminal" to get default)
+    #wal -q --theme base16-nord
+    echo "applied FB.."
+fi
